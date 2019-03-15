@@ -1,9 +1,11 @@
 body {
   margin: 0;
   padding: 0;
+  background: #aaa url(./assets/dust-1s-200x200px.gif);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
+    color: #38003c;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
