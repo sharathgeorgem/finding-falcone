@@ -1,12 +1,16 @@
 import React, { Component } from 'react'
+import { BrowserRouter, Route } from 'react-router-dom'
 import './App.css'
+import Story from '../Story/Story'
 
 class App extends Component {
   render () {
     return (
-      <div className='App'>
-        <h1>Finding Falcone</h1>
-      </div>
+      <BrowserRouter>
+        <div className='App'>
+          <Route exact path='/' component={Story} />
+        </div>
+      </BrowserRouter>
     )
   }
 }
