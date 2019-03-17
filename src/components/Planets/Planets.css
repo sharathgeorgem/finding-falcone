@@ -1,3 +1,62 @@
-.planets {
+li {
+  list-style: none;
+}
 
+.planets {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 5%;
+  justify-items: center;
+  align-items: center;
+}
+
+.planets h1 {
+  grid-column: 1 / 7;
+}
+
+.planets img {
+  grid-column: span 2;
+  border: 5px solid #000;
+  border-radius: 10%;
+  transition: all .2s ease-in-out;
+}
+
+.planets img:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+  border-color: #eee;
+}
+
+.green {
+  opacity: 0.5;
+  border-color: #00c367;
+  transform: scale(1.5);
+}
+
+.planets p {
+  grid-column: 1 / 7;
+}
+
+#nav2 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #ff005d;
+  padding: 5%;
+  grid-column: 3 / 5;
+  justify-items: center;
+  align-items: center;
+  border: 1px solid #000;
+}
+
+#nav2:hover {
+  cursor: pointer;
+  background-color: #00c367;
+  color: black;
+  border: 1px solid #fff;
+}
+
+#spinner {
+  grid-column: 1 / 7;
+  grid-row: 2 / 3;
+  border: none;
 }
