@@ -34,6 +34,12 @@ figcaption {
   box-shadow: 2px 2px #aaa;
 }
 
+.warning {
+  grid-column: 1 / 9;
+  text-align: center;
+  color: crimson;
+}
+
 .vehicle-list {
   grid-column: span 2;
   font-family: 'Jura', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
@@ -44,7 +50,7 @@ figcaption {
 }
 
 .vehicle-list li {
-  margin: 0 0 10px 0;
+  margin: 5% 0 10% 0;
   height: 100%;
   width: 100%;
   padding: 3%;
@@ -67,11 +73,11 @@ figcaption {
 
 .vehicle-list :nth-child(odd) {
   background-color: #000;
-  box-shadow: 1px 1px #fae;
+  box-shadow: 3px 3px #fae;
 }
 
 .vehicle-list :nth-child(even) {
   color: #fff;
   background-color: #000;
-  box-shadow: 1px 1px #fae;
+  box-shadow: 3px 3px #fae;
 }

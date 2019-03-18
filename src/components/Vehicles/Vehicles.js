@@ -7,7 +7,9 @@ class Vehicles extends Component {
     super(props)
     this.state = {
       selectedPlanets: this.props.location.state,
-      vehicles: []
+      vehicles: [],
+      final: {},
+      warning: false
     }
     this.vehicleToFileName = this.vehicleToFileName.bind(this)
     this.handleVehicleClick = this.handleVehicleClick.bind(this)
@@ -28,19 +30,36 @@ class Vehicles extends Component {
     return vehicleName.join('')
   }
   handleVehicleClick (index, e) {
+    let listId = e.target.parentElement.id
     let vehicles = this.state.vehicles
-    console.log('The click event contains ', e)
+    let selectedPlanets = this.state.selectedPlanets
+    if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
+      console.log('Unreachable AF')
+      e.target.style['box-shadow'] = '3px 3px #d21'
+      this.setState({
+        warning: true
+      }, () => setTimeout(() => this.setState({ warning: false }), 3000))
+      return
+    }
     if (vehicles[index].total_no > 0) {
-      --vehicles[index].total_no
-      this.setState({vehicles})
+      let final = Object.assign({}, this.state.final)
+      console.log('Just to check', Object.keys(final))
+      if (!(Object.keys(final).includes(selectedPlanets[listId].name.toString()))) {
+        e.target.style['box-shadow'] = '3px 3px #afa'
+        --vehicles[index].total_no
+        final[`${selectedPlanets[listId].name}`] = vehicles[index].name
+      }
+      this.setState({final, vehicles})
       console.log('The total number is given as ', this.state.vehicles[index].total_no)
     } else {
+      e.target.style['box-shadow'] = '3px 3px #d21'
       console.log('You just exhausted your options. No more clicks.')
     }
   }
   render () {
     console.log(this.state.selectedPlanets)
     console.log(this.state.vehicles)
+    console.log(this.state.final)
     // let vehicles
     // let vehiclesPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552882273/'
     // if (this.state.vehicles.length) {
@@ -72,12 +91,14 @@ class Vehicles extends Component {
     }
     return (
       <div className='vehicles'>
-        <h1 className='head'>Vehicle to deploy for each planet.</h1>
+        <h1 className='head'>Select vehicle to deploy for each planet.</h1>
         {planets}
-        <ul className='vehicle-list'>{vehicles}</ul>
-        <ul className='vehicle-list'>{vehicles}</ul>
-        <ul className='vehicle-list'>{vehicles}</ul>
-        <ul className='vehicle-list'>{vehicles}</ul>
+        <ul className='vehicle-list' id='0'>{vehicles}</ul>
+        <ul className='vehicle-list' id='1'>{vehicles}</ul>
+        <ul className='vehicle-list' id='2'>{vehicles}</ul>
+        <ul className='vehicle-list' id='3'>{vehicles}</ul>
+        {this.state.warning ? <p className='warning'>Nope. Too far.</p> : null}
+        {Object.keys(this.state.final).length === 4 ? <p>Onward</p> : null}
       </div>
     )
   }
