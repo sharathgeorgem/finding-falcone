@@ -1,0 +1,77 @@
+.vehicles {
+  display: grid;
+  margin: auto 5%;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: minmax(100px, 150px);
+  grid-gap: 10px;
+  justify-items: center;
+  align-items: center;
+}
+
+.head {
+  grid-column: 1 / 9;
+}
+
+figcaption {
+  text-align: justify;
+  font-size: 0.8em;
+}
+
+.vehicle-image {
+  height: 150%;
+  width: 100%;
+  grid-column: 2;
+  padding: 0;
+  margin: 0;
+}
+
+.selected-planets {
+  grid-column: span 2;
+  height: 100%;
+  object-fit: fill;
+  border: 5px solid #000;
+  border-radius: 10%;
+  box-shadow: 2px 2px #aaa;
+}
+
+.vehicle-list {
+  grid-column: span 2;
+  font-family: 'Jura', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  list-style-type: none;
+  padding: 0;
+}
+
+.vehicle-list li {
+  margin: 0 0 10px 0;
+  height: 100%;
+  width: 100%;
+  padding: 3%;
+  justify-items: left;
+  align-items: left;
+  transition: all .2s ease;
+}
+
+.vehicle-list li:hover {
+  cursor: pointer;
+  transform: translateY(2px);
+  transform: scale(1.1);
+}
+
+.vehicle-list li:active {
+  transform: translateY(-4px);
+  transform: scale(1.2);
+  box-shadow: 5px 5px #afa;
+}
+
+.vehicle-list :nth-child(odd) {
+  background-color: #000;
+  box-shadow: 1px 1px #fae;
+}
+
+.vehicle-list :nth-child(even) {
+  color: #fff;
+  background-color: #000;
+  box-shadow: 1px 1px #fae;
+}
