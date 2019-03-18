@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { Link } from 'react-router-dom'
 import './Vehicles.css'
 
 class Vehicles extends Component {
@@ -9,7 +10,8 @@ class Vehicles extends Component {
       selectedPlanets: this.props.location.state,
       vehicles: [],
       final: {},
-      warning: false
+      warning: false,
+      empty: false
     }
     this.vehicleToFileName = this.vehicleToFileName.bind(this)
     this.handleVehicleClick = this.handleVehicleClick.bind(this)
@@ -30,15 +32,20 @@ class Vehicles extends Component {
     return vehicleName.join('')
   }
   handleVehicleClick (index, e) {
+    if (Object.keys(this.state.final).length === 4) {
+      return
+    }
     let listId = e.target.parentElement.id
     let vehicles = this.state.vehicles
     let selectedPlanets = this.state.selectedPlanets
     if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
       console.log('Unreachable AF')
-      e.target.style['box-shadow'] = '3px 3px #d21'
+      if (e.target.style['box-shadow'] !== '3px 3px #afa') {
+        e.target.style['box-shadow'] = '3px 3px #d21'
+      }
       this.setState({
         warning: true
-      }, () => setTimeout(() => this.setState({ warning: false }), 3000))
+      }, () => setTimeout(() => this.setState({ warning: false }), 2000))
       return
     }
     if (vehicles[index].total_no > 0) {
@@ -52,14 +59,19 @@ class Vehicles extends Component {
       this.setState({final, vehicles})
       console.log('The total number is given as ', this.state.vehicles[index].total_no)
     } else {
-      e.target.style['box-shadow'] = '3px 3px #d21'
+      if (e.target.style['box-shadow'] !== '3px 3px #afa') {
+        e.target.style['box-shadow'] = '3px 3px #d21'
+      }
+      this.setState({
+        empty: true
+      }, () => setTimeout(() => this.setState({ empty: false }), 2000))
       console.log('You just exhausted your options. No more clicks.')
     }
   }
   render () {
     console.log(this.state.selectedPlanets)
     console.log(this.state.vehicles)
-    console.log(this.state.final)
+    console.log('The final state can be mini', this.state.final)
     // let vehicles
     // let vehiclesPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552882273/'
     // if (this.state.vehicles.length) {
@@ -98,7 +110,11 @@ class Vehicles extends Component {
         <ul className='vehicle-list' id='2'>{vehicles}</ul>
         <ul className='vehicle-list' id='3'>{vehicles}</ul>
         {this.state.warning ? <p className='warning'>Nope. Too far.</p> : null}
-        {Object.keys(this.state.final).length === 4 ? <p>Onward</p> : null}
+        {Object.keys(this.state.final).length === 4 ? (<Link id='nav3'
+          to={{
+            pathname: '/status',
+            state: this.state.final
+          }}>Find Falcone!</Link>) : null}
       </div>
     )
   }

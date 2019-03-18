@@ -66,9 +66,9 @@ figcaption {
 }
 
 .vehicle-list li:active {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
   transform: scale(1.2);
-  box-shadow: 5px 5px #afa;
+  box-shadow: 5px 5px #fff;
 }
 
 .vehicle-list :nth-child(odd) {
@@ -80,4 +80,23 @@ figcaption {
   color: #fff;
   background-color: #000;
   box-shadow: 3px 3px #fae;
+}
+
+#nav3 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #ff005d;
+  padding: 5%;
+  justify-items: center;
+  align-items: center;
+  border: 1px solid #000;
+  grid-column: 1 / 9;
+  padding: 1%;
+}
+
+#nav3:hover {
+  cursor: pointer;
+  background-color: #00c367;
+  color: black;
+  border: 1px solid #fff;
 }

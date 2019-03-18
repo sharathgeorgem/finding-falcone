@@ -4,6 +4,7 @@ import './App.css'
 import Story from '../Story/Story'
 import Planets from '../Planets/Planets'
 import Vehicles from '../Vehicles/Vehicles'
+import Status from '../Status/Status'
 
 class App extends Component {
   render () {
@@ -13,6 +14,7 @@ class App extends Component {
           <Route exact path='/' component={Story} />
           <Route path='/planets' component={Planets} />
           <Route path='/vehicles' component={Vehicles} />
+          <Route path='/status' component={Status} />
         </div>
       </BrowserRouter>
     )
