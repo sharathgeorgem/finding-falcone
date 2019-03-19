@@ -10,6 +10,7 @@ class Vehicles extends Component {
       selectedPlanets: this.props.location.state,
       vehicles: [],
       final: {},
+      totalTime: 0,
       warning: false,
       empty: false
     }
@@ -55,6 +56,9 @@ class Vehicles extends Component {
         e.target.style['box-shadow'] = '3px 3px #afa'
         --vehicles[index].total_no
         final[`${selectedPlanets[listId].name}`] = vehicles[index].name
+        let totalTime = this.state.totalTime
+        totalTime += selectedPlanets[listId].distance / vehicles[index].speed
+        this.setState({totalTime})
       }
       this.setState({final, vehicles})
       console.log('The total number is given as ', this.state.vehicles[index].total_no)
@@ -103,7 +107,8 @@ class Vehicles extends Component {
     }
     return (
       <div className='vehicles'>
-        <h1 className='head'>Select vehicle to deploy for each planet.</h1>
+        <h1 className='head'>Select vehicle to be deployed for each planet.</h1>
+        <h2 className='time'>Time Taken : {this.state.totalTime} hours</h2>
         {planets}
         <ul className='vehicle-list' id='0'>{vehicles}</ul>
         <ul className='vehicle-list' id='1'>{vehicles}</ul>
@@ -113,7 +118,7 @@ class Vehicles extends Component {
         {Object.keys(this.state.final).length === 4 ? (<Link id='nav3'
           to={{
             pathname: '/status',
-            state: this.state.final
+            state: [this.state.final, this.state.totalTime]
           }}>Find Falcone!</Link>) : null}
       </div>
     )

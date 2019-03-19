@@ -6,7 +6,8 @@ class Status extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      final: this.props.location.state,
+      final: this.props.location.state[0],
+      totalTime: this.props.location.state[1],
       loading: true,
       status: false,
       planetFound: ''
@@ -44,12 +45,12 @@ class Status extends Component {
   render () {
     return (
       <div className='status'>
-        <h1>Status Component</h1>
+        <h1>Status</h1>
         {this.state.loading === true
           ? <p>Loading</p>
           : this.state.status === 'false'
             ? <p>Queen not found</p>
-            : <p>Queen has been found</p>}
+            : <div><p>Queen Falcone has been found in {this.state.totalTime} hours</p></div>}
       </div>
     )
   }
