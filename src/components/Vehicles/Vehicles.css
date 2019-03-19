@@ -54,6 +54,19 @@ figcaption {
   color: crimson;
 }
 
+.mileage {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  padding: 1%;
+  font-family: 'Jura', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
+  text-align: center;
+  color: #ff005d;
+  background-color: #000;
+}
+
 .vehicle-list {
   grid-column: span 2;
   font-family: 'Jura', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",

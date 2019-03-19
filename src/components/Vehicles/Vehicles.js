@@ -11,11 +11,15 @@ class Vehicles extends Component {
       vehicles: [],
       final: {},
       totalTime: 0,
+      showMileage: false,
+      mileage: '',
       warning: false,
       empty: false
     }
     this.vehicleToFileName = this.vehicleToFileName.bind(this)
     this.handleVehicleClick = this.handleVehicleClick.bind(this)
+    this.handleMouseEnter = this.handleMouseEnter.bind(this)
+    this.handleMouseLeave = this.handleMouseLeave.bind(this)
   }
   componentDidMount () {
     axios.get('https://findfalcone.herokuapp.com/vehicles')
@@ -31,6 +35,17 @@ class Vehicles extends Component {
     let vehicleName = vehicle.name.split('')
     vehicleName.splice(vehicleName.indexOf(' '), 1, '_')
     return vehicleName.join('')
+  }
+  handleMouseEnter (index, e) {
+    this.setState({
+      showMileage: true,
+      mileage: this.state.vehicles[index].max_distance
+    })
+    console.log('Mouse enter')
+  }
+  handleMouseLeave (index, e) {
+    this.setState({showMileage: false})
+    console.log('Mouse leave')
   }
   handleVehicleClick (index, e) {
     if (Object.keys(this.state.final).length === 4) {
@@ -54,6 +69,7 @@ class Vehicles extends Component {
       console.log('Just to check', Object.keys(final))
       if (!(Object.keys(final).includes(selectedPlanets[listId].name.toString()))) {
         e.target.style['box-shadow'] = '3px 3px #afa'
+        e.target.style['color'] = '#00c367'
         --vehicles[index].total_no
         final[`${selectedPlanets[listId].name}`] = vehicles[index].name
         let totalTime = this.state.totalTime
@@ -76,21 +92,6 @@ class Vehicles extends Component {
     console.log(this.state.selectedPlanets)
     console.log(this.state.vehicles)
     console.log('The final state can be mini', this.state.final)
-    // let vehicles
-    // let vehiclesPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552882273/'
-    // if (this.state.vehicles.length) {
-    //   vehicles = this.state.vehicles.map((vehicle, index) => {
-    //     let vehicleName = this.vehicleToFileName(vehicle)
-    //     console.log('The mod vehicle name is ', vehicleName)
-    //     return <figure key={index}>
-    //       <img src={vehiclesPath + vehicleName + '.png'}
-    //         alt={vehicleName}
-    //         className='vehicle-image'
-    //         onClick={(e) => console.log('Vehicle click')} />
-    //       <figcaption>{vehicle.max_distance} Mmiles({vehicle.total_no})</figcaption>
-    //     </figure>
-    //   })
-    // }
     let planets, vehicles
     let planetPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
     if (this.state.vehicles.length) {
@@ -98,11 +99,15 @@ class Vehicles extends Component {
         return <img src={planetPath + planet.name.toLowerCase() + '.png'}
           alt={planet.name}
           className='selected-planets'
-          key={index}
-          onClick={(e) => console.log('Supta')} />
+          key={index} />
       })
       vehicles = this.state.vehicles.map((vehicle, index) => {
-        return <li key={index} onClick={(e) => this.handleVehicleClick(index, e)}>{vehicle.name} - {vehicle.total_no}</li>
+        return <li key={index}
+          onClick={(e) => this.handleVehicleClick(index, e)}
+          onMouseEnter={(e) => this.handleMouseEnter(index, e)}
+          onMouseLeave={(e) => this.handleMouseLeave(index, e)}>
+          {vehicle.name} - {vehicle.total_no}
+        </li>
       })
     }
     return (
@@ -114,6 +119,7 @@ class Vehicles extends Component {
         <ul className='vehicle-list' id='1'>{vehicles}</ul>
         <ul className='vehicle-list' id='2'>{vehicles}</ul>
         <ul className='vehicle-list' id='3'>{vehicles}</ul>
+        {this.state.showMileage ? <p className='mileage'>Can go {this.state.mileage} Megamiles</p> : null}
         {this.state.warning ? <p className='warning'>Nope. Too far.</p> : null}
         {Object.keys(this.state.final).length === 4 ? (<Link id='nav3'
           to={{

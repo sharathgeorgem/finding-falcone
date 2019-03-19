@@ -31,16 +31,22 @@
 
 #nav {
   text-decoration: none;
-  color: #fff;
+  color: #000;
   background-color: #ff005d;
   padding: 5%;
   grid-column: 3 / 4;
-  border: 1px solid #000;
+  box-shadow: 3px 3px #000;
+  transition: 0.1s ease-in;
+  border-radius: 5%;
 }
 
 #nav:hover {
   cursor: pointer;
   background-color: #00c367;
   color: black;
-  border: 1px solid #fff;
+  box-shadow: 2px 2px #000;
+}
+
+#nav:active {
+  transform: translateY(4px);
 }
