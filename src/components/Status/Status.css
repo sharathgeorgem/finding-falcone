@@ -1,0 +1,33 @@
+.status {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: minmax(100px, aut0);
+  grid-gap: 5%;
+}
+
+.status h1 {
+  grid-column: 1 / 6;
+}
+
+#status-report {
+  grid-column: 2 / 5;
+}
+
+.loader {
+  grid-column: 2 / 5;
+}
+
+#spinner {
+  position:fixed;
+  top: 80%;
+  left: 46%;
+  padding: 1%;
+  margin: 0%;
+  -webkit-animation: spin 1s infinite linear;
+  border: 10px solid #fff;
+}
+
+@-webkit-keyframes spin {
+  0%  {-webkit-transform: rotate(0deg);}
+  100% {-webkit-transform: rotate(360deg);}
+}

@@ -41,11 +41,9 @@ class Vehicles extends Component {
       showMileage: true,
       mileage: this.state.vehicles[index].max_distance
     })
-    console.log('Mouse enter')
   }
   handleMouseLeave (index, e) {
     this.setState({showMileage: false})
-    console.log('Mouse leave')
   }
   handleVehicleClick (index, e) {
     if (Object.keys(this.state.final).length === 4) {
@@ -55,7 +53,6 @@ class Vehicles extends Component {
     let vehicles = this.state.vehicles
     let selectedPlanets = this.state.selectedPlanets
     if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
-      console.log('Unreachable AF')
       if (e.target.style['box-shadow'] !== '3px 3px #afa') {
         e.target.style['box-shadow'] = '3px 3px #d21'
       }
@@ -66,18 +63,21 @@ class Vehicles extends Component {
     }
     if (vehicles[index].total_no > 0) {
       let final = Object.assign({}, this.state.final)
-      console.log('Just to check', Object.keys(final))
       if (!(Object.keys(final).includes(selectedPlanets[listId].name.toString()))) {
         e.target.style['box-shadow'] = '3px 3px #afa'
         e.target.style['color'] = '#00c367'
         --vehicles[index].total_no
         final[`${selectedPlanets[listId].name}`] = vehicles[index].name
+
+        if (vehicles[index].total_no === 0) {
+          console.log('The number is zero')
+        }
+
         let totalTime = this.state.totalTime
         totalTime += selectedPlanets[listId].distance / vehicles[index].speed
         this.setState({totalTime})
       }
       this.setState({final, vehicles})
-      console.log('The total number is given as ', this.state.vehicles[index].total_no)
     } else {
       if (e.target.style['box-shadow'] !== '3px 3px #afa') {
         e.target.style['box-shadow'] = '3px 3px #d21'
@@ -85,13 +85,9 @@ class Vehicles extends Component {
       this.setState({
         empty: true
       }, () => setTimeout(() => this.setState({ empty: false }), 2000))
-      console.log('You just exhausted your options. No more clicks.')
     }
   }
   render () {
-    console.log(this.state.selectedPlanets)
-    console.log(this.state.vehicles)
-    console.log('The final state can be mini', this.state.final)
     let planets, vehicles
     let planetPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
     if (this.state.vehicles.length) {
