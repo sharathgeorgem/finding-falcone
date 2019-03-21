@@ -3,6 +3,8 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import './Vehicles.css'
 
+import Display from '../Display/Display'
+
 class Vehicles extends Component {
   constructor (props) {
     super(props)
@@ -36,20 +38,20 @@ class Vehicles extends Component {
     vehicleName.splice(vehicleName.indexOf(' '), 1, '_')
     return vehicleName.join('')
   }
-  handleMouseEnter (index, e) {
+  handleMouseEnter (index) {
     this.setState({
       showMileage: true,
       mileage: this.state.vehicles[index].max_distance
     })
   }
-  handleMouseLeave (index, e) {
+  handleMouseLeave (index) {
     this.setState({showMileage: false})
   }
   handleVehicleClick (index, e) {
     if (Object.keys(this.state.final).length === 4) {
       return
     }
-    let listId = e.target.parentElement.id
+    let listId = e.target.parentElement.id // Anti-pattern? Refs?
     let vehicles = this.state.vehicles
     let selectedPlanets = this.state.selectedPlanets
     if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
@@ -88,22 +90,19 @@ class Vehicles extends Component {
     }
   }
   render () {
-    let planets, vehicles
-    let planetPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
+    let planets
     if (this.state.vehicles.length) {
       planets = this.state.selectedPlanets.map((planet, index) => {
-        return <img src={planetPath + planet.name.toLowerCase() + '.png'}
-          alt={planet.name}
-          className='selected-planets'
-          key={index} />
-      })
-      vehicles = this.state.vehicles.map((vehicle, index) => {
-        return <li key={index}
-          onClick={(e) => this.handleVehicleClick(index, e)}
-          onMouseEnter={(e) => this.handleMouseEnter(index, e)}
-          onMouseLeave={(e) => this.handleMouseLeave(index, e)}>
-          {vehicle.name} - {vehicle.total_no}
-        </li>
+        console.log('The planets are ', planet)
+        return <div key={index} className='selected-planets'>
+          <Display planet={planet}
+            index={index}
+            vehicles={this.state.vehicles}
+            final={this.state.final}
+            handleVehicleClick={this.handleVehicleClick}
+            handleMouseEnter={this.handleMouseEnter}
+            handleMouseLeave={this.handleMouseLeave} />
+        </div>
       })
     }
     return (
@@ -111,10 +110,6 @@ class Vehicles extends Component {
         <h1 className='head'>Select vehicle to be deployed for each planet.</h1>
         <h2 className='time'>Time Taken : {this.state.totalTime} hours</h2>
         {planets}
-        <ul className='vehicle-list' id='0'>{vehicles}</ul>
-        <ul className='vehicle-list' id='1'>{vehicles}</ul>
-        <ul className='vehicle-list' id='2'>{vehicles}</ul>
-        <ul className='vehicle-list' id='3'>{vehicles}</ul>
         {this.state.showMileage ? <p className='mileage'>Can go {this.state.mileage} Megamiles</p> : null}
         {this.state.warning ? <p className='warning'>Nope. Too far.</p> : null}
         {Object.keys(this.state.final).length === 4 ? (<Link id='nav3'

@@ -42,7 +42,11 @@ figcaption {
 .selected-planets {
   grid-column: span 2;
   height: 100%;
-  object-fit: fill;
+}
+
+.selected-planet-image {
+  object-fit: contain;
+  object-position: center;
   border: 5px solid #000;
   border-radius: 10%;
   box-shadow: 2px 2px #aaa;
@@ -56,8 +60,8 @@ figcaption {
 
 .mileage {
   position: fixed;
-  bottom: 0;
-  left: 50%;
+  bottom: 0%;
+  left: 10%;
   margin: 0;
   transform: translate(-50%, -50%);
   padding: 1%;
@@ -80,7 +84,7 @@ figcaption {
 }
 
 .vehicle-list li {
-  margin: 5% 0 10% 0;
+  margin: 5% 0 5% 0;
   height: 100%;
   width: 100%;
   padding: 3%;
@@ -114,14 +118,16 @@ figcaption {
 }
 
 #nav3 {
+  position: fixed;
+  top: 90%;
+  left: 50%;
+  transform: translate(-50%,-50%);
   text-decoration: none;
   color: #fff;
   background-color: #ff005d;
-  padding: 5%;
   justify-items: center;
   align-items: center;
   border: 1px solid #000;
-  grid-column: 1 / 9;
   padding: 1%;
 }
 
