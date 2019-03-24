@@ -18,7 +18,6 @@ class Display extends Component {
         this.state.reachableVehicles.push(vehicle.name)
       }
     })
-    console.log('The reachable vehicles are ', this.state.reachableVehicles)
   }
   componentDidUpdate () {
     if (this.state.reachableVehicles.length > 0) {
@@ -31,11 +30,6 @@ class Display extends Component {
     }
   }
   render () {
-    // console.log('For debug', this.state.planet)
-    // console.log(`For debug ${this.state.planet.name}`, this.state.vehicles)
-    // console.log('The props are ', this.props)
-    // console.log('The final obj for the bj is ', this.props.final)
-
     let vehicles = this.state.vehicles.map((vehicle, index) => {
       // if (vehicle.max_distance < this.state.planet.distance) return null
       return <li key={index}

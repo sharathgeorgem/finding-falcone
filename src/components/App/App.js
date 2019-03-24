@@ -10,12 +10,20 @@ class App extends Component {
   render () {
     return (
       <BrowserRouter>
+        <header>
+          <span className='back'>Back</span>
+        </header>
         <div className='App'>
           <Route exact path='/' component={Story} />
           <Route path='/planets' component={Planets} />
           <Route path='/vehicles' component={Vehicles} />
           <Route path='/status' component={Status} />
         </div>
+        <footer>
+          <span className='marquee'>
+            Long live the King of the Lengaburu!
+          </span>
+        </footer>
       </BrowserRouter>
     )
   }
