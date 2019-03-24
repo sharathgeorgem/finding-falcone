@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import './Story.css'
-import falconImg from '../../assets/images/Falcon.png'
+
+const FALCON_IMAGE_PATH = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746277/falcon.png'
 
 class Story extends Component {
   render () {
@@ -9,7 +10,7 @@ class Story extends Component {
       <div className='story'>
         <h1>Finding Falcone</h1>
         <div className='storyboard'>
-          <img src={falconImg} alt='Falcon' />
+          <img src={FALCON_IMAGE_PATH} alt='Falcon' />
           <div id='storyboard-text'>In the planet of Lengaburu...in the distant
             distant galaxy of Tara B. After the recent war with neighbouring
             planet Falicornia, King Shan has exiled the Queen of Falicornia
