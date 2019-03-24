@@ -12,23 +12,31 @@ class Vehicles extends Component {
       selectedPlanets: this.props.location.state,
       vehicles: [],
       final: {},
+      uniqueVehicleList: [],
       totalTime: 0,
       showMileage: false,
       mileage: '',
       warning: false,
+      allPlanetsReachable: true,
       empty: false
     }
     this.vehicleToFileName = this.vehicleToFileName.bind(this)
     this.handleVehicleClick = this.handleVehicleClick.bind(this)
     this.handleMouseEnter = this.handleMouseEnter.bind(this)
     this.handleMouseLeave = this.handleMouseLeave.bind(this)
+    this.handlePlanetUnreachable = this.handlePlanetUnreachable.bind(this)
   }
   componentDidMount () {
     axios.get('https://findfalcone.herokuapp.com/vehicles')
       .then(response => {
-        console.log(response)
+        // console.log(response)
+        let vehicleName = []
+        response.data.forEach(vehicle => {
+          vehicleName.push(vehicle.name)
+        })
         this.setState({
-          vehicles: response.data
+          vehicles: response.data,
+          uniqueVehicleList: [...this.state.uniqueVehicleList, ...vehicleName]
         })
       })
       .catch(error => console.log(error))
@@ -39,13 +47,19 @@ class Vehicles extends Component {
     return vehicleName.join('')
   }
   handleMouseEnter (index) {
-    this.setState({
-      showMileage: true,
-      mileage: this.state.vehicles[index].max_distance
-    })
+    // this.setState({
+    //   showMileage: true,
+    //   mileage: this.state.vehicles[index].max_distance
+    // })
   }
   handleMouseLeave (index) {
-    this.setState({showMileage: false})
+    // this.setState({showMileage: false})
+  }
+  handlePlanetUnreachable () {
+    console.log('Handling planet unreachable in parent component')
+    this.setState({
+      allPlanetsReachable: false
+    })
   }
   handleVehicleClick (index, e) {
     if (Object.keys(this.state.final).length === 4) {
@@ -72,7 +86,12 @@ class Vehicles extends Component {
         final[`${selectedPlanets[listId].name}`] = vehicles[index].name
 
         if (vehicles[index].total_no === 0) {
-          console.log('The number is zero')
+          console.log('The name of vehicle whose count became zero is ', vehicles[index].name)
+          let uniqueVehicleList = this.state.uniqueVehicleList
+          uniqueVehicleList.splice(uniqueVehicleList.indexOf(vehicles[index].name), 1)
+          this.setState({
+            uniqueVehicleList
+          })
         }
 
         let totalTime = this.state.totalTime
@@ -93,15 +112,17 @@ class Vehicles extends Component {
     let planets
     if (this.state.vehicles.length) {
       planets = this.state.selectedPlanets.map((planet, index) => {
-        console.log('The planets are ', planet)
+        // console.log('The planets are ', planet)
         return <div key={index} className='selected-planets'>
           <Display planet={planet}
             index={index}
             vehicles={this.state.vehicles}
             final={this.state.final}
+            uniqueVehicleList={this.state.uniqueVehicleList}
             handleVehicleClick={this.handleVehicleClick}
             handleMouseEnter={this.handleMouseEnter}
-            handleMouseLeave={this.handleMouseLeave} />
+            handleMouseLeave={this.handleMouseLeave}
+            handlePlanetUnreachable={this.handlePlanetUnreachable} />
         </div>
       })
     }
@@ -109,7 +130,7 @@ class Vehicles extends Component {
       <div className='vehicles'>
         <h1 className='head'>Select vehicle to be deployed for each planet.</h1>
         <h2 className='time'>Time Taken : {this.state.totalTime} hours</h2>
-        {planets}
+        {!this.state.allPlanetsReachable ? <p>Reset</p> : <>{planets}</>}
         {this.state.showMileage ? <p className='mileage'>Can go {this.state.mileage} Megamiles</p> : null}
         {this.state.warning ? <p className='warning'>Nope. Too far.</p> : null}
         {Object.keys(this.state.final).length === 4 ? (<Link id='nav3'

@@ -15,7 +15,7 @@ class Planets extends Component {
   componentDidMount () {
     axios.get('https://findfalcone.herokuapp.com/planets')
       .then(response => {
-        console.log(response)
+        // console.log(response)
         this.setState({
           planets: response.data
         })
@@ -23,7 +23,7 @@ class Planets extends Component {
       .catch(error => console.log(error))
   }
   addOrRemovePlanets (index, e) {
-    console.log('Shine a light', e.target.style['opacity'])
+    // console.log('Shine a light', e.target.style['opacity'])
     let selectedPlanets = this.state.selectedPlanets
     if (selectedPlanets.includes(this.state.planets[index])) {
       e.target.style['opacity'] = 1
