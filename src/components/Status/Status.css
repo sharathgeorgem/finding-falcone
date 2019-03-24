@@ -9,12 +9,51 @@
   grid-column: 1 / 6;
 }
 
+#nav4 {
+  text-decoration: none;
+  color: #fff;
+  background-color: #ff005d;
+  justify-items: center;
+  align-items: center;
+  border: 1px solid #000;
+  padding: 1%;
+  font-size: 1em;
+}
+
+#nav4:hover {
+  cursor: pointer;
+  background-color: #00c367;
+  color: black;
+  border: 1px solid #fff;
+}
+
 #status-report {
   grid-column: 2 / 5;
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-items: flex-start;
+  background-color: black;
+  word-wrap: break-word;
+  font-family: 'Jura', -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+  "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+  sans-serif;
 }
 
 .loader {
   grid-column: 2 / 5;
+}
+
+#status-report > #success {
+  color: #00c367;
+}
+
+#status-report #failure {
+  color: #ff005d;
+}
+
+.highlight {
+  color: #ff005d;
 }
 
 #spinner {

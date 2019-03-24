@@ -7,11 +7,14 @@ import Vehicles from '../Vehicles/Vehicles'
 import Status from '../Status/Status'
 
 class App extends Component {
+  handleBack = () => {
+    window.history.back()
+  }
   render () {
     return (
       <BrowserRouter>
         <header>
-          <span className='back'>Back</span>
+          <span className='back' onClick={this.handleBack}>Back</span>
         </header>
         <div className='App'>
           <Route exact path='/' component={Story} />
