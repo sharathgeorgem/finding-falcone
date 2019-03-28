@@ -2,6 +2,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 # Finding Falcone
 
+A React App based on the finding-falcone UI coding challenge.
+
 ## https://finding-falcone.sharathgeorgem.now.sh/
 
 For setting up on localhost:
