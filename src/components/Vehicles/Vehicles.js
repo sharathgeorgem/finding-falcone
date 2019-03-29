@@ -5,6 +5,8 @@ import './Vehicles.css'
 
 import Display from '../Display/Display'
 
+const VEHICLES = 'https://findfalcone.herokuapp.com/vehicles'
+
 class Vehicles extends Component {
   constructor (props) {
     super(props)
@@ -30,24 +32,15 @@ class Vehicles extends Component {
     this.resetState = this.resetState.bind(this)
   }
   componentDidMount () {
-    console.log('I am being run. CHECK ME OUT!')
-    axios.get('https://findfalcone.herokuapp.com/vehicles')
+    axios.get(VEHICLES)
       .then(response => {
-        // console.log(response)
-        let vehicleName = []
-        response.data.forEach(vehicle => {
-          vehicleName.push(vehicle.name)
-        })
+        let vehicleNames = response.data.map(vehicle => vehicle.name)
         this.setState({
           vehicles: response.data,
-          uniqueVehicleList: [...vehicleName]
+          uniqueVehicleList: [...vehicleNames]
         }, () => {
-          let savedVehicles = this.state.vehicles.map(a => {
-            let newObject = {}
-            Object.keys(a).forEach(propertyKey => {
-                 newObject[propertyKey] = a[propertyKey]
-            })
-            return newObject
+          let savedVehicles = this.state.vehicles.map(vehicleObj => {
+            return {...vehicleObj}
           })
           let savedUniqueVehicleList = [...this.state.uniqueVehicleList]
           this.setState({
@@ -59,9 +52,9 @@ class Vehicles extends Component {
       .catch(error => console.log(error))
   }
   vehicleToFileName (vehicle) {
-    let vehicleName = vehicle.name.split('')
-    vehicleName.splice(vehicleName.indexOf(' '), 1, '_')
-    return vehicleName.join('')
+    let vehicleFileName = vehicle.name.split('')
+    vehicleFileName.splice(vehicleFileName.indexOf(' '), 1, '_')
+    return vehicleFileName.join('')
   }
   handleMouseEnter (index) {
     this.setState({
@@ -73,19 +66,13 @@ class Vehicles extends Component {
     this.setState({showMileage: false})
   }
   handlePlanetUnreachable () {
-    console.log('Handling planet unreachable in parent component')
     this.setState({
       allPlanetsReachable: false
     })
   }
   resetState () {
-    console.log('I have been clicked')
-    let vehicles = this.state.savedVehicles.map(a => {
-      let newObject = {}
-      Object.keys(a).forEach(propertyKey => {
-           newObject[propertyKey] = a[propertyKey]
-      })
-      return newObject
+    let vehicles = this.state.savedVehicles.map(vehicle => {
+      return {...vehicle}
     })
     this.setState({
       vehicles,
@@ -96,49 +83,52 @@ class Vehicles extends Component {
     })
   }
   handleVehicleClick (index, e) {
-    if (Object.keys(this.state.final).length === 4) {
-      return
-    }
-    let listId = e.target.parentElement.id // Anti-pattern? Refs?
-    let vehicles = this.state.vehicles
-    let selectedPlanets = this.state.selectedPlanets
-    if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
-      if (e.target.style['box-shadow'] !== '3px 3px #afa') {
-        e.target.style['box-shadow'] = '3px 3px #d21'
-      }
-      this.setState({
-        warning: true
-      }, () => setTimeout(() => this.setState({ warning: false }), 2000))
-      return
-    }
-    if (vehicles[index].total_no > 0) {
-      let final = Object.assign({}, this.state.final)
-      if (!(Object.keys(final).includes(selectedPlanets[listId].name.toString()))) {
-        e.target.style['box-shadow'] = '3px 3px #afa'
-        e.target.style['color'] = '#00c367'
-        --vehicles[index].total_no
-        final[`${selectedPlanets[listId].name}`] = vehicles[index].name
-
-        if (vehicles[index].total_no === 0) {
-          let uniqueVehicleList = this.state.uniqueVehicleList
-          uniqueVehicleList.splice(uniqueVehicleList.indexOf(vehicles[index].name), 1)
-          this.setState({
-            uniqueVehicleList
-          })
+    if (Object.keys(this.state.final).length !== 4) {
+      let listId = e.target.parentElement.id
+      let vehicles = this.state.vehicles
+      let selectedPlanets = this.state.selectedPlanets
+      
+      if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
+        if (e.target.style['box-shadow'] !== '3px 3px #afa') {
+          e.target.style['box-shadow'] = '3px 3px #d21'
         }
+        this.setState({
+          warning: true
+        }, () => setTimeout(() => this.setState({ warning: false }), 2000))
+        return
+      }
 
-        let totalTime = this.state.totalTime
-        totalTime += selectedPlanets[listId].distance / vehicles[index].speed
-        this.setState({totalTime})
+      if (vehicles[index].total_no > 0) {
+        let final = Object.assign({}, this.state.final)
+        let selectedPlanetName = selectedPlanets[listId].name.toString()
+        if (!(Object.keys(final).includes(selectedPlanetName))) {
+          // e.target.style['box-shadow'] = '3px 3px #afa'
+          // e.target.style['color'] = '#00c367'
+          --vehicles[index].total_no
+          final[`${selectedPlanets[listId].name}`] = vehicles[index].name
+
+          if (vehicles[index].total_no === 0) {
+            let uniqueVehicleList = this.state.uniqueVehicleList
+            uniqueVehicleList.splice(uniqueVehicleList.indexOf(vehicles[index].name), 1)
+            this.setState({
+              uniqueVehicleList
+            })
+          }
+
+          this.setState({
+            totalTime : this.state.totalTime + selectedPlanets[listId].distance / vehicles[index].speed
+          })
+
+        }
+        this.setState({final, vehicles})
+      } else {
+        // if (e.target.style['box-shadow'] !== '3px 3px #afa') {
+        //   e.target.style['box-shadow'] = '3px 3px #d21'
+        // }
+        this.setState({
+          empty: true
+        }, () => setTimeout(() => this.setState({ empty: false }), 2000))
       }
-      this.setState({final, vehicles})
-    } else {
-      if (e.target.style['box-shadow'] !== '3px 3px #afa') {
-        e.target.style['box-shadow'] = '3px 3px #d21'
-      }
-      this.setState({
-        empty: true
-      }, () => setTimeout(() => this.setState({ empty: false }), 2000))
     }
   }
   render () {

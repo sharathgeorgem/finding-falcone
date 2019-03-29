@@ -3,6 +3,10 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import './Planets.css'
 
+const PLANETS_API = 'https://findfalcone.herokuapp.com/planets'
+const PLANET_PATH = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
+const LOADING_GIF = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552800489/loading_1.gif'
+
 class Planets extends Component {
   constructor (props) {
     super(props)
@@ -13,9 +17,8 @@ class Planets extends Component {
     this.addOrRemovePlanets = this.addOrRemovePlanets.bind(this)
   }
   componentDidMount () {
-    axios.get('https://findfalcone.herokuapp.com/planets')
+    axios.get(PLANETS_API)
       .then(response => {
-        // console.log(response)
         this.setState({
           planets: response.data
         })
@@ -23,7 +26,6 @@ class Planets extends Component {
       .catch(error => console.log(error))
   }
   addOrRemovePlanets (index, e) {
-    // console.log('Shine a light', e.target.style['opacity'])
     let selectedPlanets = this.state.selectedPlanets
     if (selectedPlanets.includes(this.state.planets[index])) {
       e.target.style['opacity'] = 1
@@ -43,10 +45,9 @@ class Planets extends Component {
   render () {
     console.log('On click, the current list inside render is ', this.state.selectedPlanets)
     let planets
-    let planetPath = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
     if (this.state.planets.length) {
       planets = this.state.planets.map((planet, index) => {
-        return <img src={planetPath + planet.name.toLowerCase() + '.png'}
+        return <img src={PLANET_PATH + planet.name.toLowerCase() + '.png'}
           alt={planet.name}
           key={index}
           onClick={(e) => this.addOrRemovePlanets(index, e)} />
@@ -56,7 +57,7 @@ class Planets extends Component {
       <div className='planets'>
         <h1>She could be anywhere. Choose 4.</h1>
         {!this.state.planets.length
-          ? <img src='https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552800489/loading_1.gif'
+          ? <img src={LOADING_GIF}
             alt='Spinner' id='spinner' />
           : planets}
         {this.state.selectedPlanets.length === 4 ? (

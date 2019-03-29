@@ -153,3 +153,11 @@ figcaption {
   color: black;
   border: 1px solid #fff;
 }
+
+.shadow-green {
+  box-shadow: '3px 3px #afa';
+}
+
+.shadow-red {
+  box-shadow: '3px 3px #d21';
+}
