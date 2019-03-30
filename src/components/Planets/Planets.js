@@ -3,7 +3,6 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 import './Planets.css'
 
-const PLANETS_API = 'https://findfalcone.herokuapp.com/planets'
 const PLANET_PATH = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552746276/'
 const LOADING_GIF = 'https://res.cloudinary.com/dmmb5w7sm/image/upload/v1552800489/loading_1.gif'
 
@@ -17,7 +16,8 @@ class Planets extends Component {
     this.addOrRemovePlanets = this.addOrRemovePlanets.bind(this)
   }
   componentDidMount () {
-    axios.get(PLANETS_API)
+    console.log(this.props)
+    axios.get(this.props.PLANETS_API)
       .then(response => {
         this.setState({
           planets: response.data

@@ -6,6 +6,8 @@ import Planets from '../Planets/Planets'
 import Vehicles from '../Vehicles/Vehicles'
 import Status from '../Status/Status'
 
+const PLANETS_API = 'https://findfalcone.herokuapp.com/planets'
+
 class App extends Component {
   handleBack = () => {
     window.history.back()
@@ -18,13 +20,14 @@ class App extends Component {
         </header>
         <div className='App'>
           <Route exact path='/' component={Story} />
-          <Route path='/planets' component={Planets} />
+          <Route path='/planets' render={(props) =>
+            <Planets {...props} PLANETS_API={PLANETS_API} />} />
           <Route path='/vehicles' component={Vehicles} />
           <Route path='/status' component={Status} />
         </div>
-        <footer>
+        <footer data-testid='marquee-text'>
           <span className='marquee'>
-            Long live the King of the Lengaburu!
+          Long Live The King of Lengaburu!
           </span>
         </footer>
       </BrowserRouter>

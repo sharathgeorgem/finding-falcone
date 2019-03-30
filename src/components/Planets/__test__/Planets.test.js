@@ -1,7 +1,12 @@
 import React from 'react'
-import { render } from 'react-testing-library'
+import { render, cleanup, waitForElement } from 'react-testing-library'
+import 'jest-dom/extend-expect'
+import axiosMock from 'axios'
 import Planets from '../Planets'
 
-describe('Planets - render : ', () => {
-  
+afterEach(cleanup)
+
+it('fetches and displays data', async () => {
+  const url = 'https://findfalcone.herokuapp.com/planets'
+  const {} = render(<Planets />)
 })
