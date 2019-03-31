@@ -34,7 +34,6 @@ class Status extends Component {
         finalObj.token = response.data.token
         finalObj.planet_names = Object.keys(this.state.final)
         finalObj.vehicle_names = Object.values(this.state.final)
-        console.log('Final Object for the win is ', JSON.stringify(finalObj))
       })
       .then(() => axios.post('https://findfalcone.herokuapp.com/find', JSON.stringify(finalObj), config))
       .then(response => {
@@ -45,7 +44,6 @@ class Status extends Component {
           this.setState({planetFound: response.data.planet_name})
         }
         this.setState({status: response.data.status})
-        console.log(response)
       })
       .catch(e => console.log(e))
   }
