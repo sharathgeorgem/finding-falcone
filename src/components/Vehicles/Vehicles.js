@@ -29,7 +29,7 @@ class Vehicles extends Component {
     this.handleMouseEnter = this.handleMouseEnter.bind(this)
     this.handleMouseLeave = this.handleMouseLeave.bind(this)
     this.handlePlanetUnreachable = this.handlePlanetUnreachable.bind(this)
-    this.resetState = this.resetState.bind(this)
+    this.showWarning = this.showWarning.bind(this)
   }
   componentDidMount () {
     axios.get(VEHICLES)
@@ -82,31 +82,35 @@ class Vehicles extends Component {
       allPlanetsReachable: true,
     })
   }
+  showWarning (e) {
+    e.target.style['box-shadow'] = '3px 3px #d21'
+      this.setState({
+        warning: true
+      }, () => setTimeout(() => this.setState({ warning: false }), 2000))
+  }
+  setStyleGreen (e) {
+    e.target.style['box-shadow'] = '3px 3px #afa'
+    e.target.style['color'] = '#00c367'
+  }
+  setStyleRed (e) {
+    e.target.style['box-shadow'] = '3px 3px #d21'
+  }
   handleVehicleClick (index, e) {
     if (Object.keys(this.state.final).length !== 4) {
       let listId = e.target.parentElement.id
       let vehicles = this.state.vehicles
       let selectedPlanets = this.state.selectedPlanets
-      
       if (selectedPlanets[listId].distance > vehicles[index].max_distance) {
-        if (e.target.style['box-shadow'] !== '3px 3px #afa') {
-          e.target.style['box-shadow'] = '3px 3px #d21'
-        }
-        this.setState({
-          warning: true
-        }, () => setTimeout(() => this.setState({ warning: false }), 2000))
+        this.showWarning(e)    
         return
       }
-
       if (vehicles[index].total_no > 0) {
         let final = Object.assign({}, this.state.final)
         let selectedPlanetName = selectedPlanets[listId].name.toString()
         if (!(Object.keys(final).includes(selectedPlanetName))) {
-          // e.target.style['box-shadow'] = '3px 3px #afa'
-          // e.target.style['color'] = '#00c367'
+          this.setStyleGreen(e)
           --vehicles[index].total_no
           final[`${selectedPlanets[listId].name}`] = vehicles[index].name
-
           if (vehicles[index].total_no === 0) {
             let uniqueVehicleList = this.state.uniqueVehicleList
             uniqueVehicleList.splice(uniqueVehicleList.indexOf(vehicles[index].name), 1)
@@ -114,17 +118,13 @@ class Vehicles extends Component {
               uniqueVehicleList
             })
           }
-
           this.setState({
             totalTime : this.state.totalTime + selectedPlanets[listId].distance / vehicles[index].speed
           })
-
         }
         this.setState({final, vehicles})
       } else {
-        // if (e.target.style['box-shadow'] !== '3px 3px #afa') {
-        //   e.target.style['box-shadow'] = '3px 3px #d21'
-        // }
+        this.setStyleRed(e)
         this.setState({
           empty: true
         }, () => setTimeout(() => this.setState({ empty: false }), 2000))

@@ -18,7 +18,6 @@ class Planets extends Component {
   componentDidMount () {
     axios.get(this.props.PLANETS_API)
       .then(response => {
-        console.log('To test add', response.data)
         this.setState({
           planets: response.data
         })
