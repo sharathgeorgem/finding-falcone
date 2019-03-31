@@ -16,9 +16,9 @@ class Planets extends Component {
     this.addOrRemovePlanets = this.addOrRemovePlanets.bind(this)
   }
   componentDidMount () {
-    console.log(this.props)
     axios.get(this.props.PLANETS_API)
       .then(response => {
+        console.log('To test add', response.data)
         this.setState({
           planets: response.data
         })
@@ -43,22 +43,23 @@ class Planets extends Component {
     }
   }
   render () {
-    console.log('On click, the current list inside render is ', this.state.selectedPlanets)
     let planets
     if (this.state.planets.length) {
       planets = this.state.planets.map((planet, index) => {
         return <img src={PLANET_PATH + planet.name.toLowerCase() + '.png'}
           alt={planet.name}
           key={index}
+          className='test'
+          data-testid='resolved'
           onClick={(e) => this.addOrRemovePlanets(index, e)} />
       })
     }
     return (
-      <div className='planets'>
+      <div className='planets' data-testid='planetsContainer'>
         <h1>She could be anywhere. Choose 4.</h1>
         {!this.state.planets.length
           ? <img src={LOADING_GIF}
-            alt='Spinner' id='spinner' />
+            alt='Spinner' id='spinner' data-testid='spinner' />
           : planets}
         {this.state.selectedPlanets.length === 4 ? (
           <Link id='nav2'
